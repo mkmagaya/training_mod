@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 
-from openerp import models, fields, api
+from odoo import api, fields, models, _
 
 class MainChecklistConfig(models.Model):
     _name = 'main.checklist.config'
@@ -125,7 +125,7 @@ class HrOrientationChecklistConfig(models.Model):
 
 class HrOrientationChecklist(models.Model):
     _name = 'hr.orientation.checklist'
-    _inherit = ['mail.thread', 'ir.needaction_mixin']
+    _inherit = 'mail.thread'
     _order = 'id asc'
     _rec_name = 'name'
     _description = "Employee Course Modules"
@@ -133,7 +133,7 @@ class HrOrientationChecklist(models.Model):
     name = fields.Char(
         string='Name',
         required=True,
-        readonly=True
+#         readonly=True
     )
     responsible_user_id = fields.Many2one(
         'res.users',
@@ -275,7 +275,7 @@ class HrOrientationChecklist(models.Model):
         
 class HrOrientation(models.Model):
     _name = 'hr.orientation'
-    _inherit = ['mail.thread', 'ir.needaction_mixin']
+    _inherit = 'mail.thread'
     _order = 'id asc'
     _rec_name = 'name'
     _description = 'Employee Courses'
