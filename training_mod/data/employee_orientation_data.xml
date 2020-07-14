@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        <!--Email template -->
+        <record id="email_template_employee_orientation1" model="mail.template">
+            <field name="name">Employee Orientation - Send by Email</field>
+            <field name="email_from">${(object.company_id.email and '%s &lt;%s&gt;' % (object.company_id.name, object.company_id.email) or '')|safe}</field>
+            <field name="subject">${object.company_id.name} - Employee Orientation - (Ref ${object.name or ''})</field>
+            <field name="email_to">${object.responsible_user_id.email|safe}</field>
+            <field name="model_id" ref="telco_training.model_hr_orientation_checklist"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html"><![CDATA[
+            <div style="font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+            <p>Hello ${object.responsible_user_id.name},  </p>
+            <p>Your Supervisor has requested that you complete the Training Module below.</p>
+            <p>Training Module :- ${object.name}</p>
+            <p>Employee :- ${object.orientation_id.employee_id.name}</p>
+             % if object.expected_date:
+            <p>Expected Date :- ${object.expected_date or ''}</p>
+             % endif
+            <p>Responsible User :- ${object.responsible_user_id.name}</p>
+            <p>Supervisor :- ${object.supervisor.name}</p>
+            <p>Please log in with your ERP credentials and go to Telco Academy to check the Training MOdules that have been allocated to you. If you have any questions, don't hesitate to contact your training supervisor. Thank you for completing your training on time!</p>
+            <br/>
+            <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+        <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+            <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+    </div>
+    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+        <span style="color: #222; margin-bottom: 5px; display: block; ">
+            ${object.company_id.partner_id.sudo().with_context(show_address=True, html_format=True).name_get()[0][1] | safe}
+        </span>
+        % if object.company_id.phone:
+            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                Phone:&nbsp; ${object.company_id.phone}
+            </div>
+        % endif
+        % if object.company_id.website:
+            <div>
+                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+            </div>
+        %endif
+        <p></p>
+    </div>
+            </div>
+            ]]></field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+        <!-- Training Checklist -->
+        <record id="main_checklist_config_form_view" model="ir.ui.view">
+            <field name="name">main.checklist.config</field>
+            <field name="model">main.checklist.config</field>
+            <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <!--field name="survey_id" string="Test/Exam" /><button string="Display Test" name="action_print_survey" type="object" attrs="{'invisible':[('survey_id','=',False)]}" class="oe_link"/-->
+                        </group>
+                        <group> 
+                            <field name="department_id" />
+                            <field name="active_id" />
+                        </group>
+                    </group>
+                    <!--notebook>
+                        <page name="notes" string="Notes" >
+                            <field name="note" placeholder="Add your notes......" nolabel="1" />
+                        </page>
+                        <page name="attachment" string="Attachments" >
+                            <group>
+                                <field name="attachment_ids4"/>
+                                <field name="attachment_ids5"/>
+                                <field name="attachment_ids6"/>
+                            </group>
+                        </page>
+                    </notebook-->
+                    <notebook>
+                        <page name="checklist_configuration" string="Course Modules">
+                            <field name="main_checklist_ids">
+                                <tree editable="bottom">
+                                    <field name="name" />
+                                    <field name="responsible_user_id" />
+                                    <field name="web_url" widget="url" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+            </field>
+        </record>
+        
+        <record id="main_checklist_config_tree_view" model="ir.ui.view">
+            <field name="name">main.checklist.config</field>
+            <field name="model">main.checklist.config</field>
+            <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="department_id" />
+                <field name="survey_id" />
+            </tree>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="action_main_checklist">
+            <field name="name">Telco Academy Courses</field>
+            <field name="res_model">main.checklist.config</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+        </record>
+        
+        <!-- Employee Orientation -->
+        <record id="employee_orientation_form_view" model="ir.ui.view">
+            <field name="name">hr.orientation.form.view</field>
+            <field name="model">hr.orientation</field>
+            <field name="arch" type="xml">
+            <form>
+                 <header>
+                    <button string="Mark Confirm" groups="hr.group_hr_user" name="get_confirm" states="draft" type="object" class="oe_highlight"/>
+                    <button string="Reset To Draft" groups="hr.group_hr_manager" name="get_reset_to_draft" states="cancel" type="object" class="oe_highlight"/>
+                    <button string="Process All Test Results" type="object" name="process_survey_result"/>
+                    <!--button string="Process Test Result" type="object" name="process_survey_result" attrs="{'visible':[('checklist_state', '=', 'new')]}"/-->
+                    <button string="Repeat Course" groups="hr.group_hr_manager" name="get_repeat" states="repeat" type="object" class="oe_highlight"/>
+                    <button string="Mark Done" groups="hr.group_hr_manager" name="get_done" states="confirm" type="object" class="oe_highlight"/>
+                    <button string="Cancel" groups="hr.group_hr_manager" name="get_cancel" states="draft" type="object" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,repeat,done" colspan="2"/>
+                </header>
+                <sheet>
+                    <h1><field name="name" readonly="1"/></h1>
+                    <group>
+                        <group>
+                            <field name="employee_id" attrs="{'readonly': [('state', 'in', ['confirm','cancel','done'])]}"/>
+                            <field name="orientation_date" attrs="{'readonly': [('state', 'in', ['confirm','cancel','done'])]}"/>
+                            <field name="user_id" attrs="{'readonly': [('state', 'in', ['confirm','cancel','done'])]}"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="department_id" attrs="{'readonly': [('state', 'in', ['confirm','cancel','done'])]}"/>
+                            <field name="job_id" attrs="{'readonly': [('state', 'in', ['confirm','cancel','done'])]}"/>
+                            <field name="parent_id" attrs="{'readonly': [('state', 'in', ['confirm','cancel','done'])]}"/>
+                            <field name="main_configuration_id" attrs="{'readonly': [('state', 'in', ['confirm','cancel','done'])]}" 
+                                   domain="[('department_id','=',department_id)]"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="checklist" string="Course Modules">
+                            <field name='checklist_ids' attrs="{'readonly': [('state', 'in', ['confirm','cancel','repeat','done'])]}">
+                                <tree editable="bottom">
+                                    <field name="name" />
+                                    <field name="survey_id" string="Exam/Test" />
+                                    <field name="responsible_user_id" />
+                                    <field name="web_url" widget="url"/>
+                                    <field name="note" invisible="1"/>
+                                    <field name="attachment_ids1" invisible="1"/>
+                                    <field name="attachment_ids2" invisible="1"/>
+                                    <field name="attachment_ids3" invisible="1"/>
+                                    <field name="checklist_date" invisible="1"/>
+                                    <field name="expected_date" />
+                                    <field name="checklist_state" on_change="onchange_survey_score(checklist_state)"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <!--page name="notes" string="Notes" >
+                            <field name="note" placeholder="Add your notes......" nolabel="1" />
+                        </page-->
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+            </field>
+        </record>
+       
+        <record id="employee_orientation_tree_view" model="ir.ui.view">
+            <field name="name">hr.orientation.tree.view</field>
+            <field name="model">hr.orientation</field>
+            <field name="arch" type="xml">
+                 <tree>
+                    <field name="name" />
+                    <field name="employee_id" />
+                    <field name="department_id" />
+                    <field name="job_id" />
+                    <field name="orientation_date" />
+                    <field name="main_configuration_id" />
+                    <field name="user_id" />
+                    <field name="company_id" />
+                    <field name="state" />
+                 </tree>
+            </field>
+        </record>
+        
+        <record id="employee_orientation_search_view" model="ir.ui.view">
+            <field name="name">hr.orientation.search.view</field>
+            <field name="model">hr.orientation</field>
+            <field name="arch" type="xml">
+                <search string="Employee Courses" >
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="department_id" />
+                    <field name="job_id" />
+                    <field name="orientation_date" />
+                    <field name="main_configuration_id" />
+                    <field name="user_id" />
+                    <field name="state" />
+                    <field name="company_id" />
+                    <group expand="0" string="Group By">
+                        <filter string="Employee" domain="[]" context="{'group_by':'employee_id'}"/>
+                        <filter string="Department" domain="[]" context="{'group_by':'department_id'}"/>
+                        <filter string="Job Title" domain="[]" context="{'group_by':'job_id'}"/>
+                        <filter string="Training Date" domain="[]" context="{'group_by':'orientation_date'}"/>
+                        <filter string="Status" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Company" domain="[]" context="{'group_by':'company_id'}"/>
+                        <filter string="Responsible User" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Course Modules" domain="[]" context="{'group_by':'main_configuration_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="action_employee_orientation">
+            <field name="name">Employee Courses</field>
+            <field name="res_model">hr.orientation</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+        </record>
+        
+        <!-- Checklist Configuration-->
+       <record id="checklist_form_view" model="ir.ui.view">
+            <field name="name">hr.orientation.checklist.form.view</field>
+            <field name="model">hr.orientation.checklist.config</field>
+            <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="survey_id" string="Test/Exam"/>
+                        </group>
+                        <group>
+                            <field name="web_url" widget="url"/>
+                        </group>
+                        <group>
+                            <field name="responsible_user_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="notes" string="Notes" >
+                            <field name="note" placeholder="Add your notes......" nolabel="1" />
+                        </page>
+                        <page name="attachment" string="Attachments" >
+                            <group>
+                                <field name="attachment_ids1"/>
+                                <field name="attachment_ids2"/>
+                                <field name="attachment_ids3"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+            </field>
+        </record>
+        
+        <record id="checklist_tree_view" model="ir.ui.view">
+            <field name="name">hr.orientation.checklist.tree.view</field>
+            <field name="model">hr.orientation.checklist.config</field>
+            <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="web_url" widget="url"/>
+                <field name="responsible_user_id" />
+                <field name="survey_id" string="Test/Exam" />
+            </tree>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="action_checklist">
+            <field name="name">Telco Academy Modules</field>
+            <field name="res_model">hr.orientation.checklist.config</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+        </record>
+        
+        <record id="checklist_line_form_view" model="ir.ui.view">
+            <field name="name">hr.orientation.checklist.form</field>
+            <field name="model">hr.orientation.checklist</field>
+            <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Process Test Result" type="object" name="process_survey_result" attrs="{'visible':[('checklist_state', '=', 'new')]}"/>
+                    <field name="checklist_state" widget="statusbar" statusbar_visible="new,done,fail,pass" colspan="2"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="orientation_id"/>
+                            <field name="company_id"/>
+                            <field name="employee_id" invisible="1"/>
+                            <field name="web_url" widget="url"/>
+                            <field name="survey_id" string="Test/Exam" />
+                            <field name="note" />
+                        </group>
+                        <group>
+                            <field name="responsible_user_id" />
+                            <field name="checklist_date" />
+                            <field name="expected_date" />
+                                <button name="action_start_survey"
+                                   class="oe_stat_button"
+                                   icon="fa-user"
+                                   type="object"
+                                   help="Answer related job question"
+                                   context="{'survey_id': survey_id}"
+                                   attrs="{'invisible':[('survey_id','=',False)]}">
+                                   <div class="o_form_field o_stat_info">
+                                      <span class="o_stat_text">Start</span>
+                                      <span class="o_stat_text">Test/Exam</span>
+                                   </div>
+                                </button>
+                                <button name="action_print_survey"
+                                   class="oe_stat_button"
+                                   icon="fa-print"
+                                   type="object"
+                                   help="Print interview report"
+                                   attrs="{'invisible':[('survey_id','=',False)]}">
+                                   <div class="o_form_field o_stat_info">
+                                      <span class="o_stat_text">Print</span>
+                                      <span class="o_stat_text">Test/Exam</span>
+                                   </div>
+                                </button>
+                            <field name="survey_score" string="Test Score"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="notes" string="Notes" >
+                            <field name="note" placeholder="Add your notes......" nolabel="1" />
+                        </page>
+                        <page name="attachment" string="Attachments" >
+                            <group>
+                                <field name="attachment_ids1"/>
+                                <field name="attachment_ids2"/>
+                                <field name="attachment_ids3"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+            </field>
+        </record>
+        
+        <record id="checklist_line_view" model="ir.ui.view">
+            <field name="name">hr.orientation.checklist.tree.view</field>
+            <field name="model">hr.orientation.checklist</field>
+            <field name="arch" type="xml">
+            <tree>
+                <!--field name="orientation_id"/-->
+                <field name="name" />
+                <field name="web_url" widget="url"/>
+                <field name="responsible_user_id" />
+                <field name="checklist_date" />
+                <field name="expected_date" />
+                <field name="checklist_state" />
+                <field name="survey_score" string="Test Score" />
+            </tree>
+            </field>
+        </record>
+
+        <record id="checklist_line_search_view" model="ir.ui.view">
+            <field name="name">hr.orientation.checklist.search.view</field>
+            <field name="model">hr.orientation.checklist</field>
+            <field name="arch" type="xml">
+                <search string="Telco Academy Courses" >
+                    <field name="orientation_id"/>
+                    <field name="name" />
+                    <field name="responsible_user_id" />
+                    <field name="orientation_id" />
+                    <field name="checklist_state" />
+                    <field name="company_id"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Responsible User" domain="[]" context="{'group_by':'responsible_user_id'}"/>
+                        <filter string="Orientation" domain="[]" context="{'group_by':'orientation_id'}"/>
+                        <filter string="State" domain="[]" context="{'group_by':'checklist_state'}"/>
+                        <filter string="Company" domain="[]" context="{'group_by':'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="action_checklist_line">
+            <field name="name">Employee Course Modules</field>
+            <field name="res_model">hr.orientation.checklist</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+        </record>
+
+        <menuitem name="Telco Academy" id="menu_orientation"/>
+        <menuitem name="Employee Courses" id="menu_employee_orientation" action="action_employee_orientation" parent="menu_orientation" sequence="1"/>
+        <menuitem name="Employee Course Modules" id="menu_checklists_line" action="action_checklist_line" parent="menu_orientation" sequence="50"/>
+        <menuitem name="Configurations" id="menu_configuration" parent="menu_orientation" groups="hr.group_hr_manager" sequence="70"/>
+        <menuitem name="Telco Academy Courses" id="menu_main_checklist_config" action="action_main_checklist" parent="menu_configuration" sequence="100"/>
+        <menuitem name="Telco Academy Modules" id="menu_checklist_name" action="action_checklist" parent="menu_configuration" sequence="200"/>
+        
+    </data>
+</odoo>

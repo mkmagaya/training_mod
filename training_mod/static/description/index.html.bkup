@@ -1,0 +1,66 @@
+<section class="oe_container">
+<div class="oe_row oe_spaced">
+<h2 class="oe_slogan">Employee Training </h2>
+<p>Employee Training is part of a long-term investment in a our employees. <br>It is an initial process that provides easy access to basic information, programs and services, gives clarification and allows new employees to take an active role in their organization.<br/>
+Effectively orienting new employees to the campus and to their positions is critical to establishing successful, productive working relationships.<br> The employee's first interactions with usshould create a positive impression of your department and the campus. The time you spend planning for the new person's first days and weeks on the job will greatly increase the chance for a successful start.
+<br/>
+<b>An effective training will:</b><br/>
+- Foster an understanding of the Company culture, its values, and its diversity<br/>
+- Help the new employee make a successful adjustment to the new job<br/>
+- Help the new employee understand his/her role and how he/she fits into the total organization<br/>
+- Help the new employee achieve objectives and shorten the learning curve<br/>
+- Help the new employee develop a positive working relationship by building a foundation of knowledge about campus mission, objectives, policies, organization structure, and functions<br/>
+</p>
+<p>
+<b>Workflow:</b><br/>
+
+HR Officer/Managers create Employee Trainings / Courses <br> for new employee coming in organization and by selecting orientation checklist field on orientation form that time it will fill all orientation checklist lines automatically... 
+Now once HR Officer/Manager confirm Employee orientation that time system will create Module requests and allocate<br> jobs to relevant Trainee assosicated with that Course / Training.<br/>
+
+Now when responsible person login in system, he/she will find job allocated under Employee Courses / Employee Course Modules and complete it.<br/>
+
+Note that Courses and Modules will be configured by department, for example a training is designed <br>for the IT department then he/she will be allocated a training course under the list of courses available to the IT Department.<br/>
+
+</p>
+<p class="oe_mt32">
+<b>This module allow you to manage employee courses and training</b><br/>
+    &ensp;&ensp;* Employee Courses and Modules<br/>
+    &ensp;&ensp;* Employee Course Testing and Notifications<br/>
+    &ensp;&ensp;* Configurations <br/>
+        <p>
+          <b>Menus:</b>
+            <ul>
+              <li>Telco Academy</li>
+              <li>Telco Academy/Employee Courses</li>
+              <li>Telco Academy/Employee Course Modules</li>
+              <li>Telco Academy/Configurations</li>
+              <li>Telco Academy/Configurations/Telco Academy Courses</li>
+              <li>Telco Academy/Configurations/Telco Academy Modules</li>
+             </ul>
+        </p>
+</p>
+</div>
+</section>
+
+<section class="oe_container oe_dark" >
+<section class="oe_container" >
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan">Contact / Support</h2>
+        <div class="oe_span6">
+            <div class="oe_picture" style="margin: 25px 10%;">
+                <a href="http://www.telco.co.zw/">
+                    <img src="icon.png">
+                </a>
+            </div>
+        </div>
+        <div class="oe_span6">
+            <p class="oe_mt32">
+                If you need any help or want more additional features,<br/> you may contact us through e-mail at <br/>
+                Email:<a href="mailto:developer@telco.co.zw" target="new">developer@telco.co.zw</a><br/>
+                Website:<a href="http://www.telco.co.zw" target="new">www.telco.co.zw</a><br/>
+                Skype: telco_support
+            </p>
+        </div>
+    </div>
+</section>
+</section>
